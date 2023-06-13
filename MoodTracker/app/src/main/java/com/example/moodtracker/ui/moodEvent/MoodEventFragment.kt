@@ -4,8 +4,11 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.RadioButton
+import android.widget.RadioGroup
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.get
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.asLiveData
@@ -43,17 +46,23 @@ class MoodEventFragment : Fragment() {
 
         // not hehe
 
+        val rg = RadioGroup(requireActivity())
+        rg.orientation = RadioGroup.HORIZONTAL
+        val options = arrayOf("1", "2", "3", "4", "5")
+        for (i in options.indices) {
+            val rb = RadioButton(requireActivity())
+            rb.text = options[i]
+            rb.id = View.generateViewId()
+            rg.addView(rb)
+        }
+        binding.llMainLayout.addView(rg)
+
+
         binding.addActivityBtn.setOnClickListener {
             var describe = binding.textInput1.text.toString()
             if (describe == "") describe = "All ok!"
-            val mood = when (binding.radioGroup.checkedRadioButtonId) {
-                2131231072 -> 2
-                2131231071 -> 3
-                2131231070 -> 1
-                2131231069 -> 4
-                2131231068 -> 5
-                else -> 0
-            }
+            println(binding.llMainLayout)
+            val mood = rg.checkedRadioButtonId
             val dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")
             val dateCurrent = LocalDateTime.now().format(dateFormatter)
 
